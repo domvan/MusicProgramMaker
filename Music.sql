@@ -3,44 +3,40 @@
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION*/;
 /*!40101 SET NAMES utf8mb4 */;
 
---
-
 -- Database: `Music`
 
---
+
 CREATE DATABASE IF NOT EXISTS `music`;
 USE `music`;
 
-----------------------------------------------------------------
 
---
+
+-- ----------------------------------------------------------------
+
 
 -- Table Structure for Performer
 
--- 
 
 DROP TABLE IF EXISTS `performer`;
 CREATE TABLE `performer` (
-    `name` varchar(50) NOT NULL,
-    `age` int(11) NOT NULL,
+    `name` varchar(50) NOT NULL PRIMARY KEY,
+    `age` int NOT NULL,
     `bio` text NOT NULL,
     `classID` varchar(6) NOT NULL,
-    `levelID` varchar(6) NOT NULL,
-    PRIMARY KEY (`name`)
+    `levelID` varchar(6) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 INSERT INTO `performer` (`name`, `age`, `bio`, `classID`, `levelID`) VALUES
 ('Bret Shilliday', 22, 'I am a Violinist in class 1', '1', '5'),
-('Dominic Vandekerkhove', 20, 'I am another Violinist in class 1', '1', '4')
+('Dominic Vandekerkhove', 20, 'I am another Violinist in class 1', '1', '4'),
 ('John Smith', 10, 'I am a Cellist in class 2', '2', '2'),
 ('Jane Doe', 12, 'I am Pianist class 2', '2', '2'),
 ('Michael Scott', 19, 'I am Violist class 2', '2', '5');
 COMMIT;
 
-----------------------------------------------------------------
 
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Violinist
 
@@ -48,7 +44,7 @@ COMMIT;
 
 DROP TABLE IF EXISTS `violinist`;
 CREATE TABLE `violinist` (
-    `name` varchar(50) NOT NULL PRIMARY KEY,
+    `name` varchar(50) NOT NULL PRIMARY KEY
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -57,17 +53,14 @@ INSERT INTO `violinist` (`name`) VALUES
 ('Dominic Vandekerkhove');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Violist
 
--- 
 
 DROP TABLE IF EXISTS `violist`;
 CREATE TABLE `violist` (
-    `name` varchar(50) NOT NULL PRIMARY KEY,
+    `name` varchar(50) NOT NULL PRIMARY KEY
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -75,17 +68,14 @@ INSERT INTO `violist` (`name`) VALUES
 ('Michael Scott');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Cellist
 
--- 
 
 DROP TABLE IF EXISTS `cellist`;
 CREATE TABLE `cellist` (
-    `name` varchar(50) NOT NULL PRIMARY KEY,
+    `name` varchar(50) NOT NULL PRIMARY KEY
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -93,17 +83,14 @@ INSERT INTO `cellist` (`name`) VALUES
 ('John Smith');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Pianist
 
--- 
 
 DROP TABLE IF EXISTS `pianist`;
 CREATE TABLE `pianist` (
-    `name` varchar(50) NOT NULL PRIMARY KEY,
+    `name` varchar(50) NOT NULL PRIMARY KEY
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -111,19 +98,15 @@ INSERT INTO `pianist` (`name`) VALUES
 ('Jane Doe');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Group
-
--- 
 
 DROP TABLE IF EXISTS `group`;
 CREATE TABLE `group` (
     `gID` varchar(6) NOT NULL PRIMARY KEY,
     `age` int(11) NOT NULL,
-    `bio` text NOT NULL,
+    `bio` text NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -132,13 +115,10 @@ INSERT INTO `group` (`gID`, `age`, `bio`) VALUES
 ('2', 10, 'We are group number 2');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Trio
 
--- 
 
 DROP TABLE IF EXISTS `trio`;
 CREATE TABLE `trio` (
@@ -153,13 +133,9 @@ INSERT INTO `trio` (`gID`, `violin`, `cello`, `piano`) VALUES
 ('1', 'Bret Shilliday', 'John Smith', 'Jane Doe');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Quartet
-
--- 
 
 DROP TABLE IF EXISTS `quartet`;
 CREATE TABLE `quartet` (
@@ -175,13 +151,9 @@ INSERT INTO `quartet` (`gID`, `firstViolin`, `secondViolin`, `cello`, `viola`) V
 ('2', 'Bret Shilliday', 'Dominic Vandekerkhove', 'John Smith', 'Michael Scott');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Teacher
-
--- 
 
 DROP TABLE IF EXISTS `teacher`;
 CREATE TABLE `teacher` (
@@ -194,18 +166,15 @@ CREATE TABLE `teacher` (
 
 INSERT INTO `teacher` (`tID`, `school`, `bio`, `name`) VALUES
 ('1', 'Calgary Music Academy', 'I am teacher number 1', 'Michael Jackson'),
-('2', 'Calgary Music Academy', 'I am teacher number 2', 'Prince');
+('2', 'Calgary Music Academy', 'I am teacher number 2', 'Prince'),
 ('3', 'Calgary School of Fine Arts', 'I am teacher number 3', 'Elvis Presley'),
 ('4', 'Calgary School of Fine Arts', 'I am teacher number 4', 'Bob Marley');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Piece
 
--- 
 
 DROP TABLE IF EXISTS `piece`;
 CREATE TABLE `piece` (
@@ -220,18 +189,14 @@ CREATE TABLE `piece` (
 
 INSERT INTO `piece` (`pName`, `info`, `date`, `genre`, `musicSheetLink`, `c_name`) VALUES
 ('Chaconne', 'A violin piece by Bach', '1730', 'Classical', 'Some link', 'J.S. Bach'),
-('Concerto', 'A violin piece by Beethoven', '1810', 'Classical', 'Some link', 'Beethoven');
+('Concerto', 'A violin piece by Beethoven', '1810', 'Classical', 'Some link', 'Beethoven'),
 ('Divertimento', 'A trio piece by Mozart', '1788', 'Classical', 'Some link', 'Mozart'),
 ('Emperor', 'A quartet piece by Haydn', '1765', 'Classical', 'Some link', 'Haydn');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Composer
-
--- 
 
 DROP TABLE IF EXISTS `composer`;
 CREATE TABLE `composer` (
@@ -248,13 +213,9 @@ INSERT INTO `composer` (`cName`, `period`, `bio`) VALUES
 ('Haydn', '1700s', 'Haydn was a composer');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Admin
-
--- 
 
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin` (
@@ -269,13 +230,9 @@ INSERT INTO `admin` (`username`, `password`, `name`) VALUES
 ('kingofrock', 'eppassword', 'Elvis Presley');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Guest
-
--- 
 
 DROP TABLE IF EXISTS `guest`;
 CREATE TABLE `guest` (
@@ -290,13 +247,9 @@ INSERT INTO `guest` (`username`, `password`, `name`) VALUES
 ('SCurry', 'scpassword', 'Steph Curry');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Program
-
--- 
 
 DROP TABLE IF EXISTS `program`;
 CREATE TABLE `program` (
@@ -310,13 +263,10 @@ INSERT INTO `program` (`pID`, `numberOfPerformances`) VALUES
 ('2', 2);
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Performance
 
--- 
 
 DROP TABLE IF EXISTS `performance`;
 CREATE TABLE `performance` (
@@ -333,39 +283,33 @@ INSERT INTO `performance` (`perf_name`, `pID`, `piece_name`) VALUES
 ('Quartet plays Emperor', '2', 'Emperor');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Class
 
--- 
 
 DROP TABLE IF EXISTS `class`;
 CREATE TABLE `class` (
     `classID` varchar(6) NOT NULL PRIMARY KEY,
     `numberOfStudents` int,
-    `tName` varchar(50) NOT NULL
+    `tID` varchar(6) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-INSERT INTO `class` (`classID`, `numberOfStudents`, `tName`) VALUES
-('1', 2, 'Michael Jackson'),
-('2', 2, 'Elvis Presley');
+INSERT INTO `class` (`classID`, `numberOfStudents`, `tID`) VALUES
+('1', 2, '1'),
+('2', 3, '2');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Level
 
--- 
 
 DROP TABLE IF EXISTS `level`;
 CREATE TABLE `level` (
     `levelID` varchar(6) NOT NULL PRIMARY KEY,
-    `yearsExperience` int NOT NULL,
+    `yearsExperience` int NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -377,18 +321,14 @@ INSERT INTO `level` (`levelID`, `yearsExperience`) VALUES
 ('5', 5);
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Group_can_edit
 
--- 
-
 DROP TABLE IF EXISTS `group_can_edit`;
 CREATE TABLE `group_can_edit` (
-    `adminUsername` varchar(50) NOT NULL PRIMARY KEY,
-    `gID` varchar(6) NOT NULL,
+    `adminUsername` varchar(50) NOT NULL,
+    `gID` varchar(6) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -397,18 +337,14 @@ INSERT INTO `group_can_edit` (`adminUsername`, `gID`) VALUES
 ('kingofrock', '2');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Knows
 
--- 
-
 DROP TABLE IF EXISTS `knows`;
 CREATE TABLE `knows` (
-    `performerName` varchar(50) NOT NULL PRIMARY KEY,
-    `pieceName` varchar(50) NOT NULL,
+    `performerName` varchar(50) NOT NULL,
+    `pieceName` varchar(50) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -417,18 +353,14 @@ INSERT INTO `knows` (`performerName`, `pieceName`) VALUES
 ('Dominic Vandekerkhove', 'Concerto');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Manages
 
--- 
-
 DROP TABLE IF EXISTS `manages`;
 CREATE TABLE `manages` (
-    `adminUsername` varchar(50) NOT NULL PRIMARY KEY,
-    `classID` varchar(6) NOT NULL,
+    `adminUsername` varchar(50) NOT NULL,
+    `classID` varchar(6) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -437,18 +369,14 @@ INSERT INTO `manages` (`adminUsername`, `classID`) VALUES
 ('kingofrock', '2');
 COMMIT;
 
-----------------------------------------------------------------
+/*----------------------------------------------------------------*/
 
---
-
--- Table Structure for Composer_can_edit
-
--- 
+-- Table Structure for Composer_can_edit 
 
 DROP TABLE IF EXISTS `composer_can_edit`;
 CREATE TABLE `composer_can_edit` (
-    `adminUsername` varchar(50) NOT NULL PRIMARY KEY,
-    `cName` varchar(50) NOT NULL,
+    `adminUsername` varchar(50) NOT NULL,
+    `cName` varchar(50) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -459,18 +387,14 @@ INSERT INTO `composer_can_edit` (`adminUsername`, `cName`) VALUES
 ('kingofrock', 'Mozart');
 COMMIT;
 
-----------------------------------------------------------------
+/*----------------------------------------------------------------*/
 
---
-
--- Table Structure for Can_view
-
--- 
+-- Table Structure for Can_view 
 
 DROP TABLE IF EXISTS `can_view`;
 CREATE TABLE `can_view` (
-    `guestUsername` varchar(50) NOT NULL PRIMARY KEY,
-    `pID` varchar(6) NOT NULL,
+    `guestUsername` varchar(50) NOT NULL,
+    `pID` varchar(6) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -479,18 +403,15 @@ INSERT INTO `can_view` (`guestUsername`, `pID`) VALUES
 ('SCurry', '2');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Group_performs
 
--- 
 
 DROP TABLE IF EXISTS `group_performs`;
 CREATE TABLE `group_performs` (
-    `gID` varchar(6) NOT NULL PRIMARY KEY,
-    `pID` varchar(6) NOT NULL,
+    `gID` varchar(6) NOT NULL,
+    `pID` varchar(6) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -499,18 +420,15 @@ INSERT INTO `group_performs` (`gID`, `pID`) VALUES
 ('2', '2');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Table Structure for Solo_performs
 
--- 
 
 DROP TABLE IF EXISTS `solo_performs`;
 CREATE TABLE `solo_performs` (
     `name` varchar(50) NOT NULL PRIMARY KEY,
-    `pID` varchar(6) NOT NULL,
+    `pID` varchar(6) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -519,13 +437,9 @@ INSERT INTO `solo_performs` (`name`, `pID`) VALUES
 ('Dominic Vandekerkhove', '1');
 COMMIT;
 
-----------------------------------------------------------------
-
---
+/*----------------------------------------------------------------*/
 
 -- Constraints
-
---
 
 ALTER TABLE `performer`
     ADD CONSTRAINT `performer_ibfk_1` FOREIGN KEY (`classID`) REFERENCES `class` (`classID`),
@@ -552,7 +466,7 @@ ALTER TABLE `trio`
 ALTER TABLE `quartet`
     ADD CONSTRAINT `quartet_ibfk_1` FOREIGN KEY (`gID`) REFERENCES `group` (`gID`),
     ADD CONSTRAINT `quartet_ibfk_2` FOREIGN KEY (`firstViolin`) REFERENCES `violinist` (`name`),
-    ADD CONSTRAINT `quartet_ibfk_3` FOREIGN KEY (`secondViolin`) REFERENCES `violinist` (`name`)
+    ADD CONSTRAINT `quartet_ibfk_3` FOREIGN KEY (`secondViolin`) REFERENCES `violinist` (`name`),
     ADD CONSTRAINT `quartet_ibfk_4` FOREIGN KEY (`viola`) REFERENCES `violist` (`name`),
     ADD CONSTRAINT `quartet_ibfk_5` FOREIGN KEY (`cello`) REFERENCES `cellist` (`name`);
 
@@ -564,7 +478,7 @@ ALTER TABLE `performance`
     ADD CONSTRAINT `performance_ibfk_2` FOREIGN KEY (`piece_name`) REFERENCES `piece` (`pName`);
 
 ALTER TABLE `class`
-    ADD CONSTRAINT `class_ibfk_1` FOREIGN KEY (`tName`) REFERENCES `teacher` (`name`);
+    ADD CONSTRAINT `class_ibfk_1` FOREIGN KEY (`tID`) REFERENCES `teacher` (`tID`);
 
 ALTER TABLE `group_can_edit`
     ADD CONSTRAINT `group_can_edit_ibfk_1` FOREIGN KEY (`adminUsername`) REFERENCES `admin` (`username`),
@@ -593,6 +507,7 @@ ALTER TABLE `group_performs`
 ALTER TABLE `solo_performs`
     ADD CONSTRAINT `solo_performs_ibfk_1` FOREIGN KEY (`name`) REFERENCES `performer` (`name`),
     ADD CONSTRAINT `solo_performs_ibfk_2` FOREIGN KEY (`pID`) REFERENCES `program` (`pID`);
+
 
 
 
