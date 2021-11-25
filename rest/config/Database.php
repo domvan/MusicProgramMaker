@@ -7,6 +7,8 @@
     private $password = '';
     private $conn;
 
+    //Arbitrary Change
+
     //DB Connect
     public function connect() {
         $this->conn = null;
