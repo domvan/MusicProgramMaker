@@ -3,8 +3,8 @@
     // Params
     private $host = 'localhost';
     private $db_name = 'music';
-    private $username = 'bret';
-    private $password = '123456';
+    private $username = 'root';
+    private $password = '';
     private $conn;
 
     //DB Connect
