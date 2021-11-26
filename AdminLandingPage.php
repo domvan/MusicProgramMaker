@@ -2,13 +2,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>loginpage</title>
+    <title>Admin Landing Page</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
-    <div class="container">
+    <body>
+      <div class="container">
         </div>
-        <input type="submit" value="Manage Classes" class="submitbutton"  />
+          <input type="submit" value="Manage Classes" class="submitbutton" />
         <div class="bottom">
         </div>
         <input type="submit" value="Manage Group" class="submitbutton"  />
