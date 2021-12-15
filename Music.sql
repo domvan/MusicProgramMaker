@@ -270,17 +270,18 @@ COMMIT;
 
 DROP TABLE IF EXISTS `performance`;
 CREATE TABLE `performance` (
-    `perf_name` varchar(50) NOT NULL PRIMARY KEY,
+    `perf_name` varchar(50) NOT NULL,
+    `perfID` varchar(6) NOT NULL PRIMARY KEY,
     `pID` varchar(6) NOT NULL,
     `piece_name` varchar(50) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-INSERT INTO `performance` (`perf_name`, `pID`, `piece_name`) VALUES
-('Bret  plays Chaccone', '1', 'Chaconne'),
-('Dom plays Concerto', '1', 'Concerto'),
-('Trio plays Divertimento', '2', 'Divertimento'),
-('Quartet plays Emperor', '2', 'Emperor');
+INSERT INTO `performance` (`perf_name`, `perfID`, `pID`, `piece_name`) VALUES
+('Bret  plays Chaccone', '1', '1', 'Chaconne'),
+('Dom plays Concerto', '2', '1', 'Concerto'),
+('Trio plays Divertimento', '3', '2', 'Divertimento'),
+('Quartet plays Emperor', '4', '2', 'Emperor');
 COMMIT;
 
 /*----------------------------------------------------------------*/
@@ -411,13 +412,13 @@ COMMIT;
 DROP TABLE IF EXISTS `team_performs`;
 CREATE TABLE `team_performs` (
     `teamID` varchar(6) NOT NULL,
-    `pID` varchar(6) NOT NULL
+    `perfID` varchar(6) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-INSERT INTO `team_performs` (`teamID`, `pID`) VALUES
-('1', '2'),
-('2', '2');
+INSERT INTO `team_performs` (`teamID`, `perfID`) VALUES
+('1', '3'),
+('2', '4');
 COMMIT;
 
 /*----------------------------------------------------------------*/
@@ -427,14 +428,14 @@ COMMIT;
 
 DROP TABLE IF EXISTS `solo_performs`;
 CREATE TABLE `solo_performs` (
-    `name` varchar(50) NOT NULL PRIMARY KEY,
-    `pID` varchar(6) NOT NULL
+    `name` varchar(50) NOT NULL,
+    `perfID` varchar(6) NOT NULL PRIMARY KEY
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-INSERT INTO `solo_performs` (`name`, `pID`) VALUES
+INSERT INTO `solo_performs` (`name`, `perfID`) VALUES
 ('Bret Shilliday', '1'),
-('Dominic Vandekerkhove', '1');
+('Dominic Vandekerkhove', '2');
 COMMIT;
 
 /*----------------------------------------------------------------*/
@@ -481,8 +482,8 @@ ALTER TABLE `class`
     ADD CONSTRAINT `class_ibfk_1` FOREIGN KEY (`tID`) REFERENCES `teacher` (`tID`);
 
 ALTER TABLE `team_can_edit`
-    ADD CONSTRAINT `group_can_edit_ibfk_1` FOREIGN KEY (`adminUsername`) REFERENCES `admin` (`username`),
-    ADD CONSTRAINT `group_can_edit_ibfk_2` FOREIGN KEY (`teamID`) REFERENCES `team` (`teamID`);
+    ADD CONSTRAINT `team_can_edit_ibfk_1` FOREIGN KEY (`adminUsername`) REFERENCES `admin` (`username`),
+    ADD CONSTRAINT `team_can_edit_ibfk_2` FOREIGN KEY (`teamID`) REFERENCES `team` (`teamID`);
 
 ALTER TABLE `knows`
     ADD CONSTRAINT `knows_ibfk_1` FOREIGN KEY (`performerName`) REFERENCES `performer` (`name`),
@@ -501,12 +502,12 @@ ALTER TABLE `can_view`
     ADD CONSTRAINT `can_view_ibfk_2` FOREIGN KEY (`pID`) REFERENCES `program` (`pID`);
 
 ALTER TABLE `team_performs`
-    ADD CONSTRAINT `group_performs_ibfk_1` FOREIGN KEY (`teamID`) REFERENCES `team` (`teamID`),
-    ADD CONSTRAINT `group_performs_ibfk_2` FOREIGN KEY (`pID`) REFERENCES `program` (`pID`);
+    ADD CONSTRAINT `team_performs_ibfk_1` FOREIGN KEY (`teamID`) REFERENCES `team` (`teamID`),
+    ADD CONSTRAINT `team_performs_ibfk_2` FOREIGN KEY (`perfID`) REFERENCES `performance` (`perfID`);
 
 ALTER TABLE `solo_performs`
     ADD CONSTRAINT `solo_performs_ibfk_1` FOREIGN KEY (`name`) REFERENCES `performer` (`name`),
-    ADD CONSTRAINT `solo_performs_ibfk_2` FOREIGN KEY (`pID`) REFERENCES `program` (`pID`);
+    ADD CONSTRAINT `solo_performs_ibfk_2` FOREIGN KEY (`perfID`) REFERENCES `performance` (`perfID`);
 
 
 
