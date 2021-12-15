@@ -1,121 +1,147 @@
-<!DOCTYPE html>
-    <html>
+<!-- Creates a connection to the database -->
+<?php
+   include "Connect.php";
+   ?>
+<!-- -------------------------------------- -->
 
-        <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-h2.header {
-  text-align: center;
-}
+<!DOCTYPE HTML>
+<html>
+  <!-- Header for Tab -->
+   <head>
+      <title>Manage Performances</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=iso=8859-1">
+      <link rel="stylesheet" type="text/css" href="style.css">
+   </head>
+     <!-- Start of Body -->
+   <body>
+      <center>
+         <!-- Populates with an image at the top and will take you back to the default view (not searched) if clicked -->
+         <div class ="taskbar">
+            <a href="/MusicProgramMaker/ManagePerformances.php">
+            <img src="https://pngimg.com/uploads/music_notes/music_notes_PNG38.png" width="600" height="200"> 
+            </a>
+            <!-- Search Form -->
+            <h2> Search Performances </h2>
+            <form action ="ManagePerformances.php" method="GET">
+               <input type="text" name="search" placeholder="What are you looking for?"/> <!-- name is used to determine the query block below -->
+               <input type="submit" value="Search"/>
+            </form>
+         </div>
+         <!-- Add New Piece Form -->
+         <h2 class="header"> Add New Performance </h2>
+         <form action ="ManagePerformances.php" method="POST">
+         <!-- Gets all composers from the database and then adds them to the drop down of selectable values -->
+            <label for="text">
+               ProgramID:
+               <select name="pID">
+                  <?php 
+                     $sql = mysqli_query($connection, "SELECT pID FROM program");
+                     while ($row = $sql->fetch_assoc()){
+                       echo '<option value=" '.$row['pID'].' "> '.$row['pID'].' </option>';
+                     }
+                     ?>
+               </select>
+            </label>
+            <!-- Finish getting the composers -->
 
-body {font-family: Arial, Helvetica, sans-serif;}
-* {box-sizing: border-box;}
+            <!-- Gets all composers from the database and then adds them to the drop down of selectable values -->
+            <label for="text">
+               Group ID:
+               <select name="teamID">
+                  <?php 
+                     $sql2 = mysqli_query($connection, "SELECT teamID FROM team");
+                     while ($row2 = $sql2->fetch_assoc()){
+                       echo '<option value=" '.$row2['teamID'].' "> '.$row2['teamID'].' </option>';
+                     }
+                     ?>
+               </select>
+            </label>
+            <!-- Finish getting the composers -->
 
-.form-inline {  
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  margin: auto;
-  text-align: center;
-  width: 650px;
-}
-
-.form-inline label {
-  margin: 5px 10px 5px 0;
-}
-
-.form-inline input {
-  vertical-align: middle;
-  margin: 5px 10px 5px 0;
-  padding: 10px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-}
-
-.form-inline button {
-  padding: 10px 20px;
-  background-color: dodgerblue;
-  border: 1px solid #ddd;
-  color: white;
-  cursor: pointer;
-}
-
-.form-inline button:hover {
-  background-color: royalblue;
-}
-
-@media (max-width: 800px) {
-  .form-inline input {
-    margin: 10px 0;
-  }
-  
-  .form-inline {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-</style>
-            <title>Manage Performances</title>
-                <style>
-                    table {
-                        border-collapse: collapse;
-                        width: 75%;
-                        color: #000000;
-                        font-family: arial;
-                        font-size: auto;
-                        text-align: center;
-                        margin-left: auto;
-                        margin-right: auto;
-                        }
-                    th {
-                        background-color: #000000;
-                        color: white;
+            <!-- Gets all composers from the database and then adds them to the drop down of selectable values -->
+            <label for="text">
+               Pieces:
+               <select name="pName">
+                  <?php 
+                     $sql2 = mysqli_query($connection, "SELECT pName FROM piece");
+                     while ($row2 = $sql2->fetch_assoc()){
+                       echo '<option value=" '.$row2['pName'].' "> '.$row2['pName'].' </option>';
+                     }
+                     ?>
+               </select>
+            </label>
+            <!-- Finish getting the composers -->
+            <input type = "submit" name = "insertPerformance" value = "Add"> 
+         </form>
+         <!-- Finish Add New Piece Form-->
+         <br>
+         </br>
+         <!-- Pieces Data Table -->
+         <div class ="tableview">
+            <table width="1100" border="1" cellpadding="1" cellspacing="1">
+               <tr>
+                 <!-- Pieces Data Table Headers (Probably could get these from the database if necessary similar to the composer names) -->
+                  <th>Performance Name</th>
+                  <th>ProgramID</th>
+                  <th>Piece</th>
+                  <th>Actions</th>
+               </tr>
+               <?php
+                  // If the user clicks on the "Add" button then this query will be executed. NOTE: There is no field for data so I just added 2021 as a default but this could be left blank              
+                  if(isset($_POST["insertPerformance"])) {
+                    mysqli_query($connection, "INSERT into performance VALUES ('$_POST[pID]', '$_POST[teamID]', '$_POST[pName]')");
+                  }
+                  
+                  // If the user clicks on the "search" button then this query will be executed and the page will be reloaded with the following query.
+                  if(isset($_GET["search"])) {
+                    $search = $_GET["search"];
+                    $search = mysqli_real_escape_string($connection, $search);
+                    
+                    $query = "SELECT * FROM performance, team_performs WHERE performance.pID = team_performs.pID AND perf_name LIKE '%$search%' or performance.pID LIKE '%$search%' or piece_name LIKE '$search' or teams_performs.teamID LIKE '$search'";
+                    
+                    // Assuming there was some result then we need to build the table
+                    if(mysqli_query($connection, $query))
+                    {
+                    $result = mysqli_query($connection, $query);
+                      while($piece=mysqli_fetch_assoc($result)) {
+                      
+                              echo "<tr>";
+                      
+                              echo "<td>".$performance['perf_name']."</td>";
+                      
+                              echo "<td>".$performance['pID']."</td>";
+                      
+                              echo "<td>".$performance['piece_name']."</td>";
+                      
+                              echo "<td>".$performance['teamID']."</td>";
+                      
+                              echo "<td><a href=DeletePiece.php?id=".str_replace(" ","+",$performance['pID']).">Delete</a></td>";
+                      
+                              echo "</tr>";	
+                              
+                      }
                     }
-                    tr:nth-child(even) {background-color: #D3D3D3}
-                </style>
-            </head>
-        <body>
-<body>
-    <h2 class="header"> Add New Performance </h2>
-    <form class="form-inline">
-    <label for="teacher">ProgramID:
-            <select name="teacher" id="teacher">
-                <option value="Teacher">1</option>
-            </select>
-            </label>
-            <label for="teacher">Group:
-            <select name="teacher" id="teacher">
-                <option value="Teacher">The Best Group</option>
-            </select>
-            </label>
-            <label for="teacher">Pieces:
-            <select name="teacher" id="teacher" multiple>
-                <option value="Teacher">Piece Zero</option>
-                <option value="Teacher">Piece One</option>
-                <option value="Teacher">Piece Two</option>
-                <option value="Teacher">Piece Three</option>
-            </select>
-            </label>
-        <button type="submit">Submit</button>
-    </form>
-
-</body>
-            <table>
-                <tr>
-                    <th>ProgramID</th>
-                    <th>Group</th>
-                    <th>Piece</th>
-                    <th> </th>
-                </tr>
-            <?php
-                for ($x = 0; $x <= 8; $x++) {
-                    echo "<tr><td>" . "Program " . $x . "</td>
-                    <td>" . "Group " . $x . "</td>
-                    <td>". "Piece " . rand(1, 50) . ", " . "Piece " . rand(1, 50) . "</td>
-                    <td> <input type = submit value = " . "Delete" . " class = submitbutton></td></tr>";
-                }
-            echo "</table>";
-            ?>
-        </table>
-    </body>
+                  }	else { // If there was not a search and the page was just loaded fresh then all results should be shown
+                    $query = "SELECT * FROM performance";
+                    $result = mysqli_query($connection, $query);
+                    
+                    while($performance=mysqli_fetch_assoc($result)) {
+                      echo "<tr>";
+                      
+                     echo "<td>".$performance['perf_name']."</td>";
+                      
+                      echo "<td>".$performance['pID']."</td>";
+                      
+                      echo "<td>".$performance['piece_name']."</td>";
+                      
+                      echo "<td><a href=DeletePiece.php?id=".str_replace(" ","+",$performance['pID']).">Delete</a></td>";
+                      
+                      echo "</tr>";
+                    }
+                  }
+                ?>
+            </table>
+         </div>
+      </center>
+   </body>
 </html>
