@@ -1,123 +1,136 @@
-<!DOCTYPE html>
-    <html>
+<!-- Creates a connection to the database -->
+<?php
+   include "Connect.php";
+   ?>
+<!-- -------------------------------------- -->
 
-        <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-h2.header {
-  text-align: center;
-}
-
-body {font-family: Arial, Helvetica, sans-serif;}
-* {box-sizing: border-box;}
-
-.form-inline {  
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  margin: auto;
-  text-align: center;
-  width: 650px;
-}
-
-.form-inline label {
-  margin: 5px 10px 5px 0;
-}
-
-.form-inline input {
-  vertical-align: middle;
-  margin: 5px 10px 5px 0;
-  padding: 10px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-}
-
-.form-inline button {
-  padding: 10px 20px;
-  background-color: dodgerblue;
-  border: 1px solid #ddd;
-  color: white;
-  cursor: pointer;
-}
-
-.form-inline button:hover {
-  background-color: royalblue;
-}
-
-@media (max-width: 800px) {
-  .form-inline input {
-    margin: 10px 0;
-  }
-  
-  .form-inline {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-</style>
-            <title>Manage Pieces</title>
-                <style>
-                    table {
-                        border-collapse: collapse;
-                        width: 75%;
-                        color: #000000;
-                        font-family: arial;
-                        font-size: auto;
-                        text-align: center;
-                        margin-left: auto;
-                        margin-right: auto;
-                        }
-                    th {
-                        background-color: #000000;
-                        color: white;
-                    }
-                    tr:nth-child(even) {background-color: #D3D3D3}
-                </style>
-            </head>
-        <body>
-<body>
-    <h2 class="header"> Add New Piece </h2>
-    <form class="form-inline">
-        <label for="text">Name:</label>
-            <input type="text" id="name" placeholder="Piece Name" name="name">
-          <label for="text">Genre:</label>
-            <input type="text" id="name" placeholder="Genre" name="name">
-          <label for="text">Info:</label>
-            <input type="text" id="name" placeholder="Info" name="name">
-          <label for="text">Music Sheet Link:</label>
-            <input type="text" id="name" placeholder="Link" name="name">
-        <label for="teacher">Composer:
-            <select name="teacher" id="teacher">
-                <option value="Teacher">Bach</option>
-                <option value="Mrs. 2">Mrs. 2</option>
-                <option value="Mrs. 3">Mrs. 3</option>
-                <option value="Mrs. 4">Mrs. 4</option>
-            </select>
+<!DOCTYPE HTML>
+<html>
+  <!-- Header for Tab -->
+   <head>
+      <title>Manage Pieces</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=iso=8859-1">
+      <link rel="stylesheet" type="text/css" href="style.css">
+   </head>
+     <!-- Start of Body -->
+   <body>
+      <center>
+         <!-- Populates with an image at the top and will take you back to the default view (not searched) if clicked -->
+         <div class ="taskbar">
+            <a href="/MusicProgramMaker/ManagePieces.php">
+            <img src="https://pngimg.com/uploads/music_notes/music_notes_PNG38.png" width="600" height="200"> 
+            </a>
+            <!-- Search Form -->
+            <h2> Search Pieces </h2>
+            <form action ="ManagePieces.php" method="GET">
+               <input type="text" name="search" placeholder="What are you looking for?"/> <!-- name is used to determine the query block below -->
+               <input type="submit" value="Search"/>
+            </form>
+         </div>
+         <!-- Add New Piece Form -->
+         <h2 class="header"> Add New Piece </h2>
+         <form action ="ManagePieces.php" method="POST">
+            <label for="text">Name:</label>
+            <input type="text" name="name" placeholder="Piece Name">
+            <label for="text">Genre:</label>
+            <input type="text" name="genre" placeholder="Genre">
+            <label for="text">Info:</label>
+            <input type="text" name="info" placeholder="Info">
+            <label for="text">Music Sheet Link:</label>
+            <input type="text" name="link" placeholder="Link">
+            <label for="text">
+               Composer:
+               <select name="cname">
+                  <!-- Gets all composers from the database and then adds them to the drop down of selectable values -->
+                  <?php 
+                     $sql = mysqli_query($connection, "SELECT cName FROM composer");
+                     while ($row = $sql->fetch_assoc()){
+                       echo '<option value=" '.$row['cName'].' "> '.$row['cName'].' </option>';
+                     }
+                     ?>
+                  <!-- Finish getting the composers -->
+               </select>
             </label>
-        <button type="submit">Submit</button>
-    </form>
-
-</body>
-            <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Genre</th>
-                    <th>Info</th>
-                    <th>Music Sheet Link</th>
-                    <th>Composer</th>
-                    <th> </th>
-                </tr>
-            <?php
-                for ($x = 4; $x <= 10; $x++) {
-                    echo "<tr><td>" . "Piece" . $x . "</td>
-                    <td>". "Genre" . $x . "</td>
-                    <td>". "This is the " . $x . " th information" . "</td>
-                    <td>". "www.sheetmusic.com/" . $x . "</td>
-                    <td>". "Composer" . $x . "</td>
-                    <td> <input type = submit value = " . "Delete" . " class = submitbutton></td></tr>";
-                }
-            echo "</table>";
-            ?>
-        </table>
-    </body>
+            <input type = "submit" name = "insertPiece" value = "Add"> 
+         </form>
+         <!-- Finish Add New Piece Form-->
+         <br>
+         </br>
+         <!-- Pieces Data Table -->
+         <div class ="tableview">
+            <table width="1100" border="1" cellpadding="1" cellspacing="1">
+               <tr>
+                 <!-- Pieces Data Table Headers (Probably could get these from the database if necessary similar to the composer names) -->
+                  <th>Name</th>
+                  <th>Genre</th>
+                  <th>Info</th>
+                  <th>Music Sheet Link</th>
+                  <th>Composer</th>
+                  <th>Actions</th>
+               </tr>
+               <?php
+                  // If the user clicks on the "Add" button then this query will be executed. NOTE: There is no field for data so I just added 2021 as a default but this could be left blank              
+                  if(isset($_POST["insertPiece"])) {
+                    mysqli_query($connection, "INSERT into piece VALUES ('$_POST[name]', '$_POST[info]', '2021', '$_POST[genre]', '$_POST[link]', '$_POST[cname]')");
+                  }
+                  
+                  // If the user clicks on the "search" button then this query will be executed and the page will be reloaded with the following query.
+                  if(isset($_GET["search"])) {
+                    $search = $_GET["search"];
+                    $search = mysqli_real_escape_string($connection, $search);
+                    
+                    $query = "SELECT * FROM piece WHERE pName LIKE '%$search%' or genre LIKE '%$search%' or Info = '$search'
+                    or c_name LIKE '%$search%'";
+                    
+                    // Assuming there was some result then we need to build the table
+                    if(mysqli_query($connection, $query))
+                    {
+                    $result = mysqli_query($connection, $query);
+                      while($piece=mysqli_fetch_assoc($result)) {
+                      
+                              echo "<tr>";
+                      
+                              echo "<td form = myForm name=tester >".$piece['pName']."</td>";
+                      
+                              echo "<td>".$piece['genre']."</td>";
+                      
+                              echo "<td>".$piece['info']."</td>";
+                      
+                              echo "<td>".$piece['musicSheetLink']."</td>";
+                      
+                              echo "<td>".$piece['c_name']."</td>";
+                      
+                              echo "<td><a href=DeletePiece.php?id=".str_replace(" ","+",$piece['pName']).">Delete</a></td>";
+                      
+                              echo "</tr>";	
+                              
+                      }
+                    }
+                  }	else { // If there was not a search and the page was just loaded fresh then all results should be shown
+                    $query = "SELECT * FROM piece";
+                    $result = mysqli_query($connection, $query);
+                    
+                    while($piece=mysqli_fetch_assoc($result)) {
+                      echo "<tr>";
+                      
+                      echo "<td>".$piece['pName']."</td>";
+                      
+                      echo "<td>".$piece['genre']."</td>";
+                      
+                      echo "<td>".$piece['info']."</td>";
+                      
+                      echo "<td>".$piece['musicSheetLink']."</td>";
+                      
+                      echo "<td>".$piece['c_name']."</td>";
+                      
+                              echo "<td><a href=DeletePiece.php?id=".str_replace(" ","+",$piece['pName']).">Delete</a></td>";
+                      
+                      echo "</tr>";
+                    }
+                  }
+                ?>
+            </table>
+         </div>
+      </center>
+   </body>
 </html>
