@@ -45,7 +45,7 @@
                   <?php 
                      $sql = mysqli_query($connection, "SELECT cName FROM composer");
                      while ($row = $sql->fetch_assoc()){
-                       echo '<option value=" '.$row['cName'].' "> '.$row['cName'].' </option>';
+                       echo '<option value="'.$row['cName'].'"> '.$row['cName'].' </option>';
                      }
                      ?>
                   <!-- Finish getting the composers -->
@@ -72,6 +72,7 @@
                   // If the user clicks on the "Add" button then this query will be executed. NOTE: There is no field for data so I just added 2021 as a default but this could be left blank              
                   if(isset($_POST["insertPiece"])) {
                      mysqli_query($connection, "INSERT into piece VALUES ('$_POST[name]', '$_POST[info]', '2021', '$_POST[genre]', '$_POST[link]', '$_POST[cname]')");
+                     //printf("Error: %s\n", $connection -> error);
                   }
                   
                   // If the user clicks on the "search" button then this query will be executed and the page will be reloaded with the following query.
