@@ -122,7 +122,7 @@
                       }
                     }
                   }	else { // If there was not a search and the page was just loaded fresh then all results should be shown
-                    $query = "SELECT * FROM performance";
+                    $query = "SELECT * FROM performance, team_performs, solo_performs WHERE team_performs";
                     $result = mysqli_query($connection, $query);
                     
                     while($performance=mysqli_fetch_assoc($result)) {

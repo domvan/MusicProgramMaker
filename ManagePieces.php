@@ -71,7 +71,7 @@
                <?php
                   // If the user clicks on the "Add" button then this query will be executed. NOTE: There is no field for data so I just added 2021 as a default but this could be left blank              
                   if(isset($_POST["insertPiece"])) {
-                    mysqli_query($connection, "INSERT into piece VALUES ('$_POST[name]', '$_POST[info]', '2021', '$_POST[genre]', '$_POST[link]', '$_POST[cname]')");
+                     mysqli_query($connection, "INSERT into piece VALUES ('$_POST[name]', '$_POST[info]', '2021', '$_POST[genre]', '$_POST[link]', '$_POST[cname]')");
                   }
                   
                   // If the user clicks on the "search" button then this query will be executed and the page will be reloaded with the following query.
@@ -79,7 +79,7 @@
                     $search = $_GET["search"];
                     $search = mysqli_real_escape_string($connection, $search);
                     
-                    $query = "SELECT * FROM piece WHERE pName LIKE '%$search%' or genre LIKE '%$search%' or Info = '$search'
+                    $query = "SELECT * FROM piece WHERE pName LIKE '%$search%' or genre LIKE '%$search%' or info LIKE '$search' or musicSheetLink LIKE '$search'
                     or c_name LIKE '%$search%'";
                     
                     // Assuming there was some result then we need to build the table
@@ -90,7 +90,7 @@
                       
                               echo "<tr>";
                       
-                              echo "<td form = myForm name=tester >".$piece['pName']."</td>";
+                              echo "<td>".$piece['pName']."</td>";
                       
                               echo "<td>".$piece['genre']."</td>";
                       
@@ -123,7 +123,7 @@
                       
                       echo "<td>".$piece['c_name']."</td>";
                       
-                              echo "<td><a href=DeletePiece.php?id=".str_replace(" ","+",$piece['pName']).">Delete</a></td>";
+                      echo "<td><a href=DeletePiece.php?id=".str_replace(" ","+",$piece['pName']).">Delete</a></td>";
                       
                       echo "</tr>";
                     }
