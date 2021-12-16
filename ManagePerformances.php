@@ -30,14 +30,16 @@
          <!-- Add New Piece Form -->
          <h2 class="header"> Add New Performance </h2>
          <form action ="ManagePerformances.php" method="POST">
+            <label for="text">Performance Name:</label>
+            <input type="text" name="perf_name" placeholder="Performance Name">
          <!-- Gets all composers from the database and then adds them to the drop down of selectable values -->
             <label for="text">
-               ProgramID:
+               Program ID:
                <select name="pID">
                   <?php 
                      $sql = mysqli_query($connection, "SELECT pID FROM program");
                      while ($row = $sql->fetch_assoc()){
-                       echo '<option value=" '.$row['pID'].' "> '.$row['pID'].' </option>';
+                       echo '<option value="'.$row['pID'].'"> '.$row['pID'].' </option>';
                      }
                      ?>
                </select>
@@ -51,7 +53,7 @@
                   <?php 
                      $sql2 = mysqli_query($connection, "SELECT teamID FROM team");
                      while ($row2 = $sql2->fetch_assoc()){
-                       echo '<option value=" '.$row2['teamID'].' "> '.$row2['teamID'].' </option>';
+                       echo '<option value="'.$row2['teamID'].'"> '.$row2['teamID'].' </option>';
                      }
                      ?>
                </select>
@@ -65,13 +67,13 @@
                   <?php 
                      $sql2 = mysqli_query($connection, "SELECT pName FROM piece");
                      while ($row2 = $sql2->fetch_assoc()){
-                       echo '<option value=" '.$row2['pName'].' "> '.$row2['pName'].' </option>';
+                       echo '<option value="'.$row2['pName'].'"> '.$row2['pName'].' </option>';
                      }
                      ?>
                </select>
             </label>
             <!-- Finish getting the composers -->
-            <input type = "submit" name = "insertPerformance" value = "Add"> 
+            <input type = "submit" name = "insertGroupPerformance" value = "Add"> 
          </form>
          <!-- Finish Add New Piece Form-->
          <br>
@@ -83,13 +85,17 @@
                  <!-- Pieces Data Table Headers (Probably could get these from the database if necessary similar to the composer names) -->
                   <th>Performance Name</th>
                   <th>ProgramID</th>
+                  <th>GroupID</th>
                   <th>Piece</th>
                   <th>Actions</th>
                </tr>
                <?php
                   // If the user clicks on the "Add" button then this query will be executed. NOTE: There is no field for data so I just added 2021 as a default but this could be left blank              
-                  if(isset($_POST["insertPerformance"])) {
-                    mysqli_query($connection, "INSERT into performance VALUES ('$_POST[pID]', '$_POST[teamID]', '$_POST[pName]')");
+                  if(isset($_POST["insertGroupPerformance"])) {
+                    mysqli_query($connection, "INSERT into performance VALUES ($_POST[perf_name]', '$_POST[pID]', '$_POST[pName]')");
+                    printf("Error 1: %s\n", $connection -> error);
+                    mysqli_query($connection, "INSERT into group_performs VALUES ('$_POST[teamID]', '$_POST[perf_name]'");
+                    printf("Error 2: %s\n", $connection -> error);
                   }
                   
                   // If the user clicks on the "search" button then this query will be executed and the page will be reloaded with the following query.
@@ -122,7 +128,7 @@
                       }
                     }
                   }	else { // If there was not a search and the page was just loaded fresh then all results should be shown
-                    $query = "SELECT * FROM performance, team_performs, solo_performs WHERE team_performs";
+                    $query = "SELECT * FROM performance, group_performs WHERE performance.perf_name = group_performs.gID";
                     $result = mysqli_query($connection, $query);
                     
                     while($performance=mysqli_fetch_assoc($result)) {
