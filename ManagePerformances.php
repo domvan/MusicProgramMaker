@@ -14,6 +14,7 @@
    </head>
      <!-- Start of Body -->
    <body>
+   <a href="AdminLandingPage.php">&#8592 Back</a>
       <center>
          <!-- Populates with an image at the top and will take you back to the default view (not searched) if clicked -->
          <div class ="taskbar">

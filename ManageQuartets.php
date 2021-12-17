@@ -8,7 +8,7 @@
 <html>
   <!-- Header for Tab -->
    <head>
-      <title>Manage Trios</title>
+      <title>Manage Quartets</title>
       <meta http-equiv="Content-Type" content="text/html; charset=iso=8859-1">
       <link rel="stylesheet" type="text/css" href="style.css">
    </head>
@@ -18,23 +18,23 @@
       <center>
          <!-- Populates with an image at the top and will take you back to the default view (not searched) if clicked -->
          <div class ="taskbar">
-            <a href="/MusicProgramMaker/ManageTrios.php">
+            <a href="/MusicProgramMaker/ManageQuartets.php">
             <img src="https://pngimg.com/uploads/music_notes/music_notes_PNG38.png" width="600" height="200"> 
             </a>
             <!-- Search Form -->
-            <h2> Search Trios </h2>
-            <form action ="ManageTrios.php" method="GET">
-               <input type="text" name="search" placeholder="Search for trios"/> <!-- name is used to determine the query block below -->
+            <h2> Search Quartets </h2>
+            <form action ="ManageQuartets.php" method="GET">
+               <input type="text" name="search" placeholder="Search for quartets"/> <!-- name is used to determine the query block below -->
                <input type="submit" value="Search"/>
             </form>
          </div>
-         <!-- Add New Trio Form -->
-         <h2 class="header"> Add New Trio </h2>
-         <form action ="ManageTrios.php" method="POST">
+         <!-- Add New Quartet Form -->
+         <h2 class="header"> Add New Quartet </h2>
+         <form action ="ManageQuartets.php" method="POST">
             <!--  -->
             <label for="text">
-               Violinist:
-               <select name="violinist">
+               First Violinist:
+               <select name="violinist1">
                   <?php 
                      $sql = mysqli_query($connection, "SELECT name FROM violinist");
                      while ($row = $sql->fetch_assoc()){
@@ -44,6 +44,18 @@
                </select>
             </label>
             <!-- -->
+            <!--  -->
+            <label for="text">
+               Second Violinist:
+               <select name="violinist2">
+                  <?php 
+                     $sql = mysqli_query($connection, "SELECT name FROM violinist");
+                     while ($row = $sql->fetch_assoc()){
+                       echo '<option value="'.$row['name'].'"> '.$row['name'].' </option>';
+                     }
+                     ?>
+               </select>
+            </label>
             <!--  -->
             <label for="text">
                Cellist:
@@ -60,9 +72,9 @@
             <!--  -->
             <label for="text">
                Pianist:
-               <select name="pianist">
+               <select name="violist">
                   <?php 
-                     $sql = mysqli_query($connection, "SELECT name FROM pianist");
+                     $sql = mysqli_query($connection, "SELECT name FROM violist");
                      while ($row = $sql->fetch_assoc()){
                        echo '<option value="'.$row['name'].'"> '.$row['name'].' </option>';
                      }
@@ -74,32 +86,36 @@
             <label for="text">Bio:</label>
             <input type="text" name="bio" placeholder="Bio">
             <!-- -->
-            <input type = "submit" name = "insertTrio" value = "Add"> 
+            <input type = "submit" name = "insertQuartet" value = "Add"> 
          </form>
-         <!-- Finish Add New Trio Form-->
+         <!-- Finish Add New Quartet Form-->
          <br>
          </br>
-         <!-- Trios Data Table -->
+         <!-- Quartets Data Table -->
          <div class ="tableview">
             <table width="1100" border="1" cellpadding="1" cellspacing="1">
                <tr>
-                 <!-- Trios Data Table Headers (Probably could get these from the database if necessary similar to the composer names) -->
-                  <th>Violinist</th>
+                 <!-- Quartets Data Table Headers (Probably could get these from the database if necessary similar to the composer names) -->
+                  <th>First Violinist</th>
+                  <th>Second Violinist</th>
                   <th>Cellist</th>
-                  <th>Pianist</th>
+                  <th>Violist</th>
                   <th>Age</th>
                   <th>Bio</th>
                   <th>Actions</th>
                </tr>
                <?php
                   // If the user clicks on the "Add" button then this query will be executed. NOTE: There is no field for data so I just added 2021 as a default but this could be left blank              
-                  if(isset($_POST["insertTrio"])) {
-                     $front_violinist = substr($_POST["violinist"], 0, 2);
-                     $front_cellist = substr($_POST["cellist"], 0, 2);
-                     $front_pianist = substr($_POST["pianist"], 0, 2);
-                     $gID = $front_violinist . $front_cellist . $front_pianist;
+                  if(isset($_POST["insertQuartet"])) {
+                     $front_violinist1 = substr($_POST["violinist1"], 0, 1);
+                     $front_violinist2 = substr($_POST["violinist2"], 0, 1);
+                     $front_cellist = substr($_POST["cellist"], 0, 1);
+                     $front_violist = substr($_POST["violist"], 0, 1);
+                     $front_age = substr($_POST["age"], 0, 1);
+                     $gID = $front_violinist1 . $front_violinist1. $front_cellist . $front_violist . $front_age;
+                     echo $gID;
                      mysqli_query($connection, "INSERT into team VALUES ('$gID', '$_POST[age]', '$_POST[bio]')");
-                     mysqli_query($connection, "INSERT into trio VALUES ('$gID', '$_POST[violinist]', '$_POST[cellist]', '$_POST[pianist]')");
+                     mysqli_query($connection, "INSERT into quartet VALUES ('$gID', '$_POST[violinist1]', '$_POST[violinist2]', '$_POST[cellist]', '$_POST[violist]')");
                   }
                   
                   // If the user clicks on the "search" button then this query will be executed and the page will be reloaded with the following query.
@@ -107,52 +123,56 @@
                     $search = $_GET["search"];
                     $search = mysqli_real_escape_string($connection, $search);
                     
-                    $query = "SELECT * FROM trio, team WHERE (trio.gID = team.gID) AND (violin LIKE '%$search%' or cello LIKE '%$search%' or piano LIKE '%$search%')";
+                    $query = "SELECT * FROM quartet, team WHERE quartet.gID = team.gID AND (firstViolin LIKE '%$search%' or secondViolin LIKE '%$search%' or cello LIKE '%$search%' or viola LIKE '%$search%')";
                     
                     // Assuming there was some result then we need to build the table
                     if(mysqli_query($connection, $query))
                     {
                     $result = mysqli_query($connection, $query);
-                      while($trio=mysqli_fetch_assoc($result)) {
+                      while($quartet=mysqli_fetch_assoc($result)) {
                       
                         echo "<tr>";
                       
-                        echo "<td>".$trio['violin']."</td>";
-                        
-                        echo "<td>".$trio['cello']."</td>";
-                        
-                        echo "<td>".$trio['piano']."</td>";
+                        echo "<td>".$quartet['firstViolin']."</td>";
 
-                        echo "<td>".$trio['age']."</td>";
-
-                        echo "<td>".$trio['bio']."</td>";
+                        echo "<td>".$quartet['secondViolin']."</td>";
                         
-                        echo "<td><a href=DeleteTrio.php?id=".str_replace(" ","+",$trio['gID']).">Delete</a></td>";
+                        echo "<td>".$quartet['cello']."</td>";
+                        
+                        echo "<td>".$quartet['viola']."</td>";
+
+                        echo "<td>".$quartet['age']."</td>";
+
+                        echo "<td>".$quartet['bio']."</td>";
+                        
+                        echo "<td><a href=DeleteQuartet.php?id=".str_replace(" ","+",$quartet['gID']).">Delete</a></td>";
                         
                         echo "</tr>";	
                               
                       }
                     }
                   }	else { // If there was not a search and the page was just loaded fresh then all results should be shown
-                    $query = "SELECT * FROM trio, team WHERE trio.gID = team.gID";
+                    $query = "SELECT * FROM quartet, team WHERE quartet.gID = team.gID";
                     $result = mysqli_query($connection, $query);
                     
-                    while($trio=mysqli_fetch_assoc($result)) {
+                    while($quartet=mysqli_fetch_assoc($result)) {
                      echo "<tr>";
                       
-                     echo "<td>".$trio['violin']."</td>";
-                     
-                     echo "<td>".$trio['cello']."</td>";
-                     
-                     echo "<td>".$trio['piano']."</td>";
+                     echo "<td>".$quartet['firstViolin']."</td>";
 
-                     echo "<td>".$trio['age']."</td>";
+                     echo "<td>".$quartet['secondViolin']."</td>";
+                     
+                     echo "<td>".$quartet['cello']."</td>";
+                     
+                     echo "<td>".$quartet['viola']."</td>";
 
-                     echo "<td>".$trio['bio']."</td>";
+                     echo "<td>".$quartet['age']."</td>";
+
+                     echo "<td>".$quartet['bio']."</td>";
                      
-                     echo "<td><a href=DeleteTrio.php?id=".str_replace(" ","+",$trio['gID']).">Delete</a></td>";
+                     echo "<td><a href=DeleteQuartet.php?id=".str_replace(" ","+",$quartet['gID']).">Delete</a></td>";
                      
-                     echo "</tr>";	
+                     echo "</tr>";
                     }
                   }
                 ?>

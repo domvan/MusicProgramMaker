@@ -14,6 +14,7 @@
    </head>
      <!-- Start of Body -->
    <body>
+   <a href="AdminLandingPage.php">&#8592 Back</a>
       <center>
          <!-- Populates with an image at the top and will take you back to the default view (not searched) if clicked -->
          <div class ="taskbar">
@@ -39,6 +40,7 @@
             <label for="text">
                Class:
                <select name="className">
+               <option value='NULL'>No Class</option>
                   <!-- Gets all composers from the database and then adds them to the drop down of selectable values -->
                   <?php 
                      $sql = mysqli_query($connection, "SELECT classID FROM class");
@@ -91,6 +93,9 @@
                <?php
                   // If the user clicks on the "Add" button then this query will be executed. NOTE: There is no field for data so I just added 2021 as a default but this could be left blank              
                   if(isset($_POST["insertStudent"])) {
+                     if($_POST["className"] = 'NULL'){
+                        mysqli_query($connection, "INSERT into performer VALUES ('$_POST[name]', '$_POST[age]', '$_POST[bio]', NULL, '$_POST[levelID]')");
+                     }
                      mysqli_query($connection, "INSERT into performer VALUES ('$_POST[name]', '$_POST[age]', '$_POST[bio]', '$_POST[className]', '$_POST[levelID]')");
                      printf("Error: %s\n", $connection -> error);
                      mysqli_query($connection, "INSERT into $_POST[instrument] VALUES ('$_POST[name]')");
