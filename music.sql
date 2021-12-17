@@ -17,9 +17,11 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Database: `music`
---
+-- Database: `Music`
+
+
+CREATE DATABASE IF NOT EXISTS `music`;
+USE `music`;
 
 -- --------------------------------------------------------
 
@@ -271,7 +273,7 @@ CREATE TABLE `performer` (
   `name` varchar(50) NOT NULL,
   `age` int(11) NOT NULL,
   `bio` text NOT NULL,
-  `classID` varchar(6) NOT NULL,
+  `classID` varchar(6) DEFAULT NULL,
   `levelID` varchar(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -712,7 +714,7 @@ ALTER TABLE `performance`
 -- Constraints for table `performer`
 --
 ALTER TABLE `performer`
-  ADD CONSTRAINT `performer_ibfk_1` FOREIGN KEY (`classID`) REFERENCES `class` (`classID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `performer_ibfk_1` FOREIGN KEY (`classID`) REFERENCES `class` (`classID`),
   ADD CONSTRAINT `performer_ibfk_2` FOREIGN KEY (`levelID`) REFERENCES `level` (`levelID`) ON DELETE CASCADE;
 
 --
@@ -731,7 +733,7 @@ ALTER TABLE `piece`
 -- Constraints for table `quartet`
 --
 ALTER TABLE `quartet`
-  ADD CONSTRAINT `quartet_ibfk_1` FOREIGN KEY (`gID`) REFERENCES `team` (`gID`),
+  ADD CONSTRAINT `quartet_ibfk_1` FOREIGN KEY (`gID`) REFERENCES `team` (`gID`) ON DELETE CASCADE,
   ADD CONSTRAINT `quartet_ibfk_2` FOREIGN KEY (`firstViolin`) REFERENCES `violinist` (`name`) ON DELETE CASCADE,
   ADD CONSTRAINT `quartet_ibfk_3` FOREIGN KEY (`secondViolin`) REFERENCES `violinist` (`name`) ON DELETE CASCADE,
   ADD CONSTRAINT `quartet_ibfk_4` FOREIGN KEY (`viola`) REFERENCES `violist` (`name`) ON DELETE CASCADE,
