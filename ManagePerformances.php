@@ -49,20 +49,6 @@
 
             <!-- Gets all composers from the database and then adds them to the drop down of selectable values -->
             <label for="text">
-               Group ID:
-               <select name="teamID">
-                  <?php 
-                     $sql2 = mysqli_query($connection, "SELECT teamID FROM team");
-                     while ($row2 = $sql2->fetch_assoc()){
-                       echo '<option value="'.$row2['teamID'].'"> '.$row2['teamID'].' </option>';
-                     }
-                     ?>
-               </select>
-            </label>
-            <!-- Finish getting the composers -->
-
-            <!-- Gets all composers from the database and then adds them to the drop down of selectable values -->
-            <label for="text">
                Pieces:
                <select name="pName">
                   <?php 
@@ -74,7 +60,7 @@
                </select>
             </label>
             <!-- Finish getting the composers -->
-            <input type = "submit" name = "insertGroupPerformance" value = "Add"> 
+            <input type = "submit" name = "insertPerformance" value = "Add"> 
          </form>
          <!-- Finish Add New Piece Form-->
          <br>
@@ -86,17 +72,14 @@
                  <!-- Pieces Data Table Headers (Probably could get these from the database if necessary similar to the composer names) -->
                   <th>Performance Name</th>
                   <th>ProgramID</th>
-                  <th>GroupID</th>
                   <th>Piece</th>
                   <th>Actions</th>
                </tr>
                <?php
                   // If the user clicks on the "Add" button then this query will be executed. NOTE: There is no field for data so I just added 2021 as a default but this could be left blank              
-                  if(isset($_POST["insertGroupPerformance"])) {
-                    mysqli_query($connection, "INSERT into performance VALUES ($_POST[perf_name]', '$_POST[pID]', '$_POST[pName]')");
+                  if(isset($_POST["insertPerformance"])) {
+                    mysqli_query($connection, "INSERT into performance VALUES ('$_POST[perf_name]', '$_POST[pID]', '$_POST[pName]')");
                     printf("Error 1: %s\n", $connection -> error);
-                    mysqli_query($connection, "INSERT into group_performs VALUES ('$_POST[teamID]', '$_POST[perf_name]'");
-                    printf("Error 2: %s\n", $connection -> error);
                   }
                   
                   // If the user clicks on the "search" button then this query will be executed and the page will be reloaded with the following query.
@@ -104,13 +87,13 @@
                     $search = $_GET["search"];
                     $search = mysqli_real_escape_string($connection, $search);
                     
-                    $query = "SELECT * FROM performance, team_performs WHERE performance.pID = team_performs.pID AND perf_name LIKE '%$search%' or performance.pID LIKE '%$search%' or piece_name LIKE '$search' or teams_performs.teamID LIKE '$search'";
+                    $query = "SELECT * FROM performance WHERE perf_name LIKE '%$search%' or pID LIKE '%$search%' or piece_name LIKE '$search'";
                     
                     // Assuming there was some result then we need to build the table
                     if(mysqli_query($connection, $query))
                     {
                     $result = mysqli_query($connection, $query);
-                      while($piece=mysqli_fetch_assoc($result)) {
+                      while($performance=mysqli_fetch_assoc($result)) {
                       
                               echo "<tr>";
                       
@@ -120,16 +103,14 @@
                       
                               echo "<td>".$performance['piece_name']."</td>";
                       
-                              echo "<td>".$performance['teamID']."</td>";
-                      
-                              echo "<td><a href=DeletePiece.php?id=".str_replace(" ","+",$performance['pID']).">Delete</a></td>";
+                              echo "<td><a href=DeletePerformance.php?id=".str_replace(" ","+",$performance['perf_name']).">Delete</a></td>";
                       
                               echo "</tr>";	
                               
                       }
                     }
                   }	else { // If there was not a search and the page was just loaded fresh then all results should be shown
-                    $query = "SELECT * FROM performance, group_performs WHERE performance.perf_name = group_performs.gID";
+                    $query = "SELECT * FROM performance";
                     $result = mysqli_query($connection, $query);
                     
                     while($performance=mysqli_fetch_assoc($result)) {
@@ -141,7 +122,7 @@
                       
                       echo "<td>".$performance['piece_name']."</td>";
                       
-                      echo "<td><a href=DeletePiece.php?id=".str_replace(" ","+",$performance['pID']).">Delete</a></td>";
+                      echo "<td><a href=DeletePerformance.php?id=".str_replace(" ","+",$performance['perf_name']).">Delete</a></td>";
                       
                       echo "</tr>";
                     }
