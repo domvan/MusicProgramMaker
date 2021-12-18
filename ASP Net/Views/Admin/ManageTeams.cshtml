@@ -1,0 +1,43 @@
+﻿@model IEnumerable<MusicMakerProgram.Models.Team>
+
+<div class="containter p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Team List</h2>
+
+        </div>
+    </div>
+
+    <br />
+
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th calss="text-center">Performer Name</th>
+                    <th class="text-center">Manage</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td width="40%">@p.TeamID</td>
+                        <td width="60%">
+                            <div class="col offset-4">
+                                <a asp-action="UpdateTeam" asp-route-Id="@p.TeamID" class="btn btn-primary w-40 mx-1">Update</a>
+                                <a asp-action="DeleteTeam" asp-route-Id="@p.TeamID" class="btn btn-danger w-40 mx-1">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No Teams in DB</p>
+    }
+</div>

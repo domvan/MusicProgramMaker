@@ -1,0 +1,30 @@
+﻿@model MusicMakerProgram.Models.Piece
+
+<div class="containter p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Piece</h2>
+        </div>
+    </div>
+    <br />
+
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Piece Name</th>
+                <th>Info</th>
+                <th>Date</th>
+                <th>Genre</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td width="25%">@Model.PName</td>
+                <td width="25%">@Model.Info</td>
+                <td width="25%">@Model.Date</td>
+                <td width="25%">@Model.Genre</td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
