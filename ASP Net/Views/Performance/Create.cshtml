@@ -1,0 +1,45 @@
+﻿@model MusicMakerProgram.Models.Performance
+
+<form method="post" asp-action="Create">
+    <div class="border p-3">
+        <div class="form-group row">
+            <h2 class="text-black-50 p1-3">Add Performance</h2>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Perf_name"></label>
+                    </div>
+                    <div class="col-4">
+                        <label asp-for="PID"></label>
+                    </div>
+                    <div class="col-4">
+                        <label asp-for="PieceID"></label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <input asp-for="Perf_name" class="form-control"/>
+                    </div>
+                    <div class="col-4">
+                        <input asp-for="PID" class="form-control" />
+                    </div>
+                    <div class="col-4">
+                        <input asp-for="PieceID" class="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-8 offset-2 row">
+                        <div class="col">
+                            <input type="submit" class="btn btn-info w-75" value="create" />
+                        </div>
+                        <div class="col">
+                            <a asp-action="Home" class="btn btn-danger w-75">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

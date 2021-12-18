@@ -1,0 +1,38 @@
+﻿@model IEnumerable<MusicMakerProgram.Models.MusicProgram>
+
+
+<div class="containter p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Program List</h2>
+        </div>
+    </div>
+    <br />
+
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Program ID</th>
+                    <th>Number of Performers</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var prog in Model)
+                {
+                    <tr>
+                        <td width="50%">
+                            <a asp-action="DisplayPerformances" asp-route-Id="@prog.PID" class="btn btn-primary w-50">@prog.PID</a>
+                        </td>
+                        <td width="50%">@prog.NumPerformers</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No Programs in DB</p>
+    }
+</div>
