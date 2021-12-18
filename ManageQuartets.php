@@ -16,22 +16,18 @@
    <body>
    <a href="AdminLandingPage.php">&#8592 Back</a>
       <center>
-         <!-- Populates with an image at the top and will take you back to the default view (not searched) if clicked -->
          <div class ="taskbar">
             <a href="/MusicProgramMaker/ManageQuartets.php">
             <img src="https://pngimg.com/uploads/music_notes/music_notes_PNG38.png" width="600" height="200"> 
             </a>
-            <!-- Search Form -->
             <h2> Search Quartets </h2>
             <form action ="ManageQuartets.php" method="GET">
-               <input type="text" name="search" placeholder="Search for quartets"/> <!-- name is used to determine the query block below -->
+               <input type="text" name="search" placeholder="Search for quartets"/>
                <input type="submit" value="Search"/>
             </form>
          </div>
-         <!-- Add New Quartet Form -->
          <h2 class="header"> Add New Quartet </h2>
          <form action ="ManageQuartets.php" method="POST">
-            <!--  -->
             <label for="text">
                First Violinist:
                <select name="violinist1">
@@ -43,8 +39,6 @@
                      ?>
                </select>
             </label>
-            <!-- -->
-            <!--  -->
             <label for="text">
                Second Violinist:
                <select name="violinist2">
@@ -56,7 +50,6 @@
                      ?>
                </select>
             </label>
-            <!--  -->
             <label for="text">
                Cellist:
                <select name="cellist">
@@ -68,8 +61,6 @@
                      ?>
                </select>
             </label>
-            <!-- -->
-            <!--  -->
             <label for="text">
                Pianist:
                <select name="violist">
@@ -85,17 +76,13 @@
             <input type="text" name="age" placeholder="Age">
             <label for="text">Bio:</label>
             <input type="text" name="bio" placeholder="Bio">
-            <!-- -->
             <input type = "submit" name = "insertQuartet" value = "Add"> 
          </form>
-         <!-- Finish Add New Quartet Form-->
          <br>
          </br>
-         <!-- Quartets Data Table -->
          <div class ="tableview">
             <table width="1100" border="1" cellpadding="1" cellspacing="1">
                <tr>
-                 <!-- Quartets Data Table Headers (Probably could get these from the database if necessary similar to the composer names) -->
                   <th>First Violinist</th>
                   <th>Second Violinist</th>
                   <th>Cellist</th>
@@ -104,8 +91,7 @@
                   <th>Bio</th>
                   <th>Actions</th>
                </tr>
-               <?php
-                  // If the user clicks on the "Add" button then this query will be executed. NOTE: There is no field for data so I just added 2021 as a default but this could be left blank              
+               <?php          
                   if(isset($_POST["insertQuartet"])) {
                      $front_violinist1 = substr($_POST["violinist1"], 0, 1);
                      $front_violinist2 = substr($_POST["violinist2"], 0, 1);
@@ -118,14 +104,12 @@
                      mysqli_query($connection, "INSERT into quartet VALUES ('$gID', '$_POST[violinist1]', '$_POST[violinist2]', '$_POST[cellist]', '$_POST[violist]')");
                   }
                   
-                  // If the user clicks on the "search" button then this query will be executed and the page will be reloaded with the following query.
                   if(isset($_GET["search"])) {
                     $search = $_GET["search"];
                     $search = mysqli_real_escape_string($connection, $search);
                     
                     $query = "SELECT * FROM quartet, team WHERE quartet.gID = team.gID AND (firstViolin LIKE '%$search%' or secondViolin LIKE '%$search%' or cello LIKE '%$search%' or viola LIKE '%$search%')";
                     
-                    // Assuming there was some result then we need to build the table
                     if(mysqli_query($connection, $query))
                     {
                     $result = mysqli_query($connection, $query);
@@ -151,7 +135,7 @@
                               
                       }
                     }
-                  }	else { // If there was not a search and the page was just loaded fresh then all results should be shown
+                  }	else {
                     $query = "SELECT * FROM quartet, team WHERE quartet.gID = team.gID";
                     $result = mysqli_query($connection, $query);
                     
